@@ -9,7 +9,7 @@ function App() {
     <div className='bg-[#09090b] min-h-screen select-none'>
       <Navbar />
 
-      <div className='py-5 px-10 md:px-40 flex flex-col gap-10'>
+      <div className='pt-24 pb-10 px-10 md:px-40 flex flex-col gap-10'>
         <SeedPhrase />
         
         <Accounts />
