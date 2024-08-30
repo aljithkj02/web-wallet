@@ -31,7 +31,7 @@ export const SeedPhrase = () => {
                             {
                                 phrases.map((phrase, i) => {
                                     return <div key={i}
-                                        className="p-4 text-center text[17px]"
+                                        className="p-4 text-center text-[15px]"
                                     >
                                         {phrase}
                                     </div>
