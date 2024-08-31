@@ -1,30 +1,40 @@
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useEffect } from "react"
 import { SolanaIcon, EthereumIcon } from '@/assets'
+import { IAccount } from "@/App";
 
-export const Accounts = () => {
-    const [accounts, setAccounts] = useState([
-        {
-            privateKey: 'Private Key',
-            publicKey: 'Public Key'
-        },
-        {
-            privateKey: 'Private Key',
-            publicKey: 'Public Key'
-        },
-    ])
+interface AccoutnsProps {
+    mnemonic: string;
+    index: number;
+    accounts: IAccount[];
+    generateNewAccount: () => Promise<void>;
+}
+
+export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: AccoutnsProps) => {
+
+    useEffect(() => {
+        if (mnemonic && index === 0) {
+            generateNewAccount();
+        }
+    }, [mnemonic])
+
     return (
         <div>
             <div className="flex items-center justify-between">
                 <p className='text-white text-xl'>My Accounts</p>
-                <Button variant="secondary">Add new account</Button>
+                
+                <Button variant="secondary"
+                    onClick={generateNewAccount}
+                >
+                    Add new account
+                </Button>
             </div>
 
             <div className="my-5 flex flex-col gap-10">
                 {
                     accounts.map((account, index) => {
                         return (
-                            <div key={account.privateKey} >
+                            <div key={account.ethPublicKey} >
                                 <p className="text-white text-center mb-1 text-lg">Account {index + 1}</p>
 
                                 <div className="border border-blue-500 px-4 py-2 rounded-lg">
@@ -35,12 +45,15 @@ export const Accounts = () => {
                                             />
                                         </div>
 
-                                        <div className="flex flex-col gap-5">
-                                            <div>
-                                                <p className="text-white">Public Key</p>
+                                        <div className="flex flex-col gap-5 w-full">
+                                            <div className="flex items-center">
+                                                <p className="text-gray-400 w-[15%]">Public Key</p>
+                                                <p className="text-white w-[85%] text-sm">{ account.solPublicKey }</p>
                                             </div>
-                                            <div>
-                                                <p className="text-white">Private Key</p>
+                                            
+                                            <div className="flex items-center">
+                                                <p className="text-gray-400 w-[15%]">Private Key</p>
+                                                <p className="text-white w-[85%] text-sm">{ account.solPrivateKey }</p>
                                             </div>
                                         </div>
                                     </div>
@@ -52,12 +65,15 @@ export const Accounts = () => {
                                             />
                                         </div>
 
-                                        <div className="flex flex-col gap-5">
-                                            <div>
-                                                <p className="text-white">Public Key</p>
+                                        <div className="flex flex-col gap-5 w-full">
+                                            <div className="flex items-center">
+                                                <p className="text-gray-400 w-[15%]">Public Key</p>
+                                                <p className="text-white w-[85%] text-sm">{ account.ethPublicKey }</p>
                                             </div>
-                                            <div>
-                                                <p className="text-white">Private Key</p>
+                                            
+                                            <div className="flex items-center">
+                                                <p className="text-gray-400 w-[15%]">Private Key</p>
+                                                <p className="text-white w-[85%] text-sm">{ account.ethPrivateKey }</p>
                                             </div>
                                         </div>
                                     </div>
