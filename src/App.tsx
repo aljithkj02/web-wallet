@@ -36,6 +36,7 @@ function App() {
 
     const handleImportWallet = (mnemonicText: string) => {
         setMnemonic(mnemonicText);
+        setPhrases(mnemonicText.split(' '));
     }
 
     const generateNewAccount = async () => {
@@ -79,7 +80,7 @@ function App() {
     }
 
     return (
-        <div className='bg-[#09090b] min-h-screen select-none'>
+        <div className='bg-[#09090b] min-h-screen'>
             <Navbar />
 
             <div className='pt-24 pb-10 px-10 md:px-40 flex flex-col gap-10'>

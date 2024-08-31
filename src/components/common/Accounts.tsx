@@ -24,11 +24,11 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
             <div className="flex items-center justify-between">
                 <p className='text-white text-xl'>My Accounts</p>
 
-                <Button variant="secondary"
+                { mnemonic && <Button variant="secondary"
                     onClick={generateNewAccount}
                 >
                     Add new account
-                </Button>
+                </Button> }
             </div>
 
             <div className="my-5 flex flex-col gap-10">

@@ -46,6 +46,11 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
         setImportSecret(false);
     }
 
+    const handleCopy = () => {
+        navigator.clipboard.writeText(mnemonic);
+        toast({ description: "Copied!"});
+    }
+
     return (
         <div>
             <Accordion type="single" collapsible>
@@ -95,6 +100,21 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                                 })
                             }
                         </div>
+                            
+                        {
+
+                            ( mnemonic || importSecret) && phrases.some((x) => x !== "") && (
+                                <div className="flex justify-center mt-5">
+                                    <Button
+                                        variant="secondary"
+                                        className="w-20"
+                                        onClick={handleCopy}
+                                    >
+                                        Copy
+                                    </Button>
+                                </div>
+                            )
+                        }
 
                         { importSecret && <div>
                             <p className="text-white text-center my-4">OR</p>
