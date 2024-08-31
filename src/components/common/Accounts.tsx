@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
+import { SolanaIcon, EthereumIcon } from '@/assets'
 
 export const Accounts = () => {
     const [accounts, setAccounts] = useState([
@@ -28,8 +29,10 @@ export const Accounts = () => {
 
                                 <div className="border border-blue-500 px-4 py-2 rounded-lg">
                                     <div className="flex items-center gap-10 border-b border-slate-400 py-4 px-4 rounded-md">
-                                        <div className="w-[10%]">
-                                            <p className="text-white">Solana</p>
+                                        <div className="w-[5%]">
+                                            <img src={SolanaIcon} alt="Solana" 
+                                                className="w-10"
+                                            />
                                         </div>
 
                                         <div className="flex flex-col gap-5">
@@ -43,8 +46,10 @@ export const Accounts = () => {
                                     </div>
 
                                     <div className="flex items-center gap-10 py-4 px-4">
-                                        <div className="w-[10%]">
-                                            <p className="text-white">Ethereum</p>
+                                        <div className="w-[5%]">
+                                            <img src={EthereumIcon} alt="Solana" 
+                                                className="w-10"
+                                            />
                                         </div>
 
                                         <div className="flex flex-col gap-5">
