@@ -19,11 +19,12 @@ interface SeedPhraseProps {
 
 export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, importWallet }: SeedPhraseProps) => {
     const [importSecret, setImportSecret] = useState(false);
+    const [phraseText, setPhraseText] = useState("");
     const { toast } = useToast();
 
     const handleOnChanage = (e: ChangeEvent<HTMLInputElement>) => {
         if (mnemonic) return;
-        
+
         const index = Number(e.target.name);
         const value = e.target.value;
 
@@ -31,11 +32,16 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
     }
 
     const handleImportWallet = () => {
-        if (phrases.some((x) => x === '')) {
+        if (phrases.some((x) => x === '' && !phraseText)) {
             toast({description: "Fill all the fields!"});
             return;
         }
-        importWallet(phrases.join(' '));
+
+        if (phraseText) {
+            importWallet(phraseText);
+        } else {
+            importWallet(phrases.join(' '));
+        }
         toast({ description: "Wallet imported successfully!"});
         setImportSecret(false);
     }
@@ -78,6 +84,7 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                                         className="p-4 text-center text-[15px]"
                                     >
                                         <Input type="text"
+                                            placeholder={(i + 1).toString()}
                                             name={i.toString()}  
                                             value={phrase}
                                             className="bg-black border-none outline-none disabled:text-white"
@@ -89,18 +96,27 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                             }
                         </div>
 
-                        <div>
-                            { importSecret && (
-                                <div className="flex mt-5 justify-center">
-                                    <Button variant="secondary"
-                                        className="w-60"
-                                        onClick={handleImportWallet}
-                                    >
-                                        Import Wallet
-                                    </Button>
-                                </div>
-                            )}
-                        </div>
+                        { importSecret && <div>
+                            <p className="text-white text-center my-4">OR</p>
+
+                            <Input 
+                                type="text"
+                                placeholder="Enter the phrase here" 
+                                className="bg-black"
+                                value={phraseText}
+                                onChange={(e) => setPhraseText(e.target.value)}
+                            />
+
+                            <div className="flex mt-5 justify-center">
+                                <Button variant="secondary"
+                                    className="w-60"
+                                    onClick={handleImportWallet}
+                                >
+                                    Import Wallet
+                                </Button>
+                            </div>
+                        </div> }
+
                     </AccordionContent>
                 </AccordionItem>
             </Accordion>
