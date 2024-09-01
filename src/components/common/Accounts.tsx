@@ -7,10 +7,12 @@ interface AccoutnsProps {
     mnemonic: string;
     index: number;
     accounts: IAccount[];
+    selectedAccountId: string | null;
     generateNewAccount: () => Promise<void>;
+    handleSelectAccountId: (accountNumber: string) => void;
 }
 
-export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: AccoutnsProps) => {
+export const Accounts = ( { mnemonic, index, accounts, selectedAccountId, generateNewAccount, handleSelectAccountId }: AccoutnsProps) => {
     const [showKey, setShowKey] = useState("");
 
     useEffect(() => {
@@ -36,9 +38,12 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
                     accounts.map((account, i) => {
                         return (
                             <div key={account.ethPublicKey} >
-                                <p className="text-white text-center mb-1 text-lg">Account {i + 1}</p>
+                                <p className="text-center mb-1 text-lg">Account {i + 1}</p>
 
-                                <div className="border border-gray-500 px-4 py-2 rounded-lg">
+                                <div 
+                                    className={`px-4 py-2 rounded-lg cursor-pointer ${selectedAccountId === i.toString() ? 'border-blue-500 border-4': 'border-black border'}`}
+                                    onClick={() => handleSelectAccountId(i.toString())}
+                                >
                                     <div className="flex items-center gap-10 border-b border-slate-400 py-4 px-4 rounded-md">
                                         <div className="w-[5%]">
                                             <img src={SolanaIcon} alt="Solana" 
@@ -59,7 +64,10 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
                                                 ) : (
                                                     <Button
                                                         className="w-[85%]"
-                                                        onClick={() => setShowKey(`sol-${i}`)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setShowKey(`sol-${i}`);
+                                                        }}
                                                     >
                                                         Show Private Key
                                                     </Button> 
@@ -88,7 +96,10 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
                                                 ) : (
                                                     <Button
                                                         className="w-[85%]"
-                                                        onClick={() => setShowKey(`eth-${i}`)}
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            setShowKey(`eth-${i}`);
+                                                        }}
                                                     >
                                                         Show Private Key
                                                     </Button> 

@@ -20,7 +20,8 @@ function App() {
     const [phrases, setPhrases] = useState<string[]>(new Array(12).fill(""))
     const [currentIndex, setCurrentIndex] = useState(0);
     const [accounts, setAccounts] = useState<IAccount[]>([]);
-    const [selectedAccount, setSelectedAccount] = useState("0");
+    const [selectedAccountId, setSelectedAccountId] = useState<string>("0");
+    const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
 
     const handleOnChanage = (index: number, value: string) => {
         phrases[index] = value;
@@ -42,16 +43,22 @@ function App() {
         const ethAccount = await walletManager.generateEthAccount(mnemonic, currentIndex);
         const solAccount = await walletManager.generateSolAccount(mnemonic, currentIndex);
         
-        setAccounts([...accounts, {
+        const newAccount = {
             ...ethAccount,
             ...solAccount
-        }])
+        };
 
+        setAccounts([...accounts, newAccount])
+
+        if (currentIndex === 0) {
+            setSelectedAccount(newAccount);
+        }
         setCurrentIndex(currentIndex + 1);
     }
 
-    const handleSelectAccount = (accountNo: string) => {
-        setSelectedAccount(accountNo);
+    const handleSelectAccountId = (accountId: string) => {
+        setSelectedAccountId(accountId);
+        setSelectedAccount(accounts[+accountId]);
     }
 
     return (
@@ -73,15 +80,24 @@ function App() {
                         accounts={accounts}
                         index={currentIndex}
                         generateNewAccount={generateNewAccount}
+                        selectedAccountId={selectedAccount ? selectedAccountId : null}
+                        handleSelectAccountId={handleSelectAccountId}
                     />
                 </div>
 
                 <div className='w-[25%] select-none'>
-                    <BalanceManagement 
-                        accounts={accounts}
-                        selectedAccount={selectedAccount}
-                        handleSelectAccount={handleSelectAccount}
-                    />
+                    { 
+                        (selectedAccount !== null) ? (
+                            <BalanceManagement 
+                                accounts={accounts}
+                                selectedAccountId={selectedAccountId}
+                                handleSelectAccountId={handleSelectAccountId}
+                                selectedAccount={selectedAccount}
+                            />
+                        ) : (
+                            <p className='text-lg text-center mt-6'>No account selected!</p>
+                        ) 
+                    }
                 </div>
             </div>
             <Toaster />

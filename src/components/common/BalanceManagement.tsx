@@ -27,18 +27,19 @@ import {
 import { EthereumIcon, SolanaIcon } from "@/assets"
 interface BalanceManagementProps {
     accounts: IAccount[];
-    selectedAccount: string;
-    handleSelectAccount: (accountNumber: string) => void;
+    selectedAccountId: string;
+    selectedAccount: IAccount;
+    handleSelectAccountId: (accountNumber: string) => void;
 }
 
-export const BalanceManagement = ({ accounts, selectedAccount, handleSelectAccount }: BalanceManagementProps) => {
+export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount }: BalanceManagementProps) => {
 
     return (
         <div className="border-l border-gray-500 fixed px-6 shadow-lg w-[25%]">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <div className='flex justify-center'>
-                        <Button variant="outline">Account {Number(selectedAccount) + 1}</Button>
+                        <Button variant="outline">Account {Number(selectedAccountId) + 1}</Button>
                     </div>
                 </DropdownMenuTrigger>
                 
@@ -47,8 +48,8 @@ export const BalanceManagement = ({ accounts, selectedAccount, handleSelectAccou
 
                     <DropdownMenuSeparator />
                     <DropdownMenuRadioGroup 
-                        value={selectedAccount} 
-                        onValueChange={handleSelectAccount}
+                        value={selectedAccountId} 
+                        onValueChange={handleSelectAccountId}
                     >
                         {
                             accounts.map((_, i) => {

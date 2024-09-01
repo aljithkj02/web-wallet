@@ -103,7 +103,7 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                             
                         {
 
-                            ( mnemonic || importSecret) && phrases.some((x) => x !== "") && (
+                            ( mnemonic || !importSecret) && phrases.some((x) => x !== "") && (
                                 <div className="flex justify-center mt-5">
                                     <Button
                                         className="w-20"
