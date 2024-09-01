@@ -85,7 +85,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
         }
 
         handleLoading(true);
-        const res = await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, (+txData.solAmount * 10 ** 9));
+        await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, (+txData.solAmount * 10 ** 9));
         handleLoading(false);
 
         toast({ description: "Transaction Successful!"});
