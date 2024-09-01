@@ -77,8 +77,10 @@ class WalletManager {
                 [from]
             )
             console.log("SIGNATURE", signature);
+            return true;
         } catch (error) {
             console.log((error as Error).message);
+            return false;
         }
     }
 }

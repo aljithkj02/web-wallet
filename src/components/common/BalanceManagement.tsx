@@ -47,12 +47,13 @@ const initTxData = {
 export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount, handleLoading }: BalanceManagementProps) => {
     const [solBalance, setSolBalance] = useState(0);
     const [ethBalance, setEthBalance] = useState(0);
-    const [txData, setTxData] = useState(initTxData)
+    const [txData, setTxData] = useState(initTxData);
+    const [refetch, setRefetch] = useState(false);
 
     useEffect(() => {
         getBalance();
         setTxData(initTxData);
-    }, [selectedAccount])
+    }, [selectedAccount, refetch])
 
     const getBalance = async () => {
         const balanceSol = await walletManager.getSolBalance(selectedAccount.solPublicKey);
@@ -79,6 +80,9 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
         handleLoading(true);
         const res = await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, (+txData.solAmount * 10 ** 9));
         handleLoading(false);
+
+        toast({ description: "Transaction Successful!"});
+        setRefetch(!refetch);
     }
 
     return (
@@ -141,6 +145,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                         onChange={handleOnChange}
                                         className="mt-5"
                                         placeholder="Recipient's Solana address"
+                                        autoComplete="off"
                                     />
 
                                     <Input
@@ -149,6 +154,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                         onChange={handleOnChange}
                                         className="mt-2"
                                         placeholder="Amount"
+                                        autoComplete="off"
                                     />
                                 </div>
                             </CardContent>
@@ -187,6 +193,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                         onChange={handleOnChange}
                                         className="mt-5"
                                         placeholder="Recipient's Ethereum address"
+                                        autoComplete="off"
                                     />
 
                                     <Input
@@ -195,6 +202,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                         onChange={handleOnChange}
                                         className="mt-2"
                                         placeholder="Amount"
+                                        autoComplete="off"
                                     />
                                 </div>
                             </CardContent>

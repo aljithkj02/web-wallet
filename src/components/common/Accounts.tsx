@@ -2,6 +2,8 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { SolanaIcon, EthereumIcon } from '@/assets'
 import { IAccount } from "@/App";
+import { Copy } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface AccoutnsProps {
     mnemonic: string;
@@ -54,7 +56,14 @@ export const Accounts = ( { mnemonic, index, accounts, selectedAccountId, genera
                                         <div className="flex flex-col gap-5 w-full">
                                             <div className="flex items-center">
                                                 <p className="text-gray-600 w-[15%]">Public Key</p>
-                                                <p className="w-[85%] text-sm">{ account.solPublicKey }</p>
+                                                <div className="flex w-[85%] gap-2">
+                                                    <p className=" text-sm">{ account.solPublicKey }</p>
+                                                    <Copy className="w-5" onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        navigator.clipboard.writeText(account.solPublicKey);
+                                                        toast({description: "Successfully copied!"});
+                                                    }}/>
+                                                </div>
                                             </div>
                                             
                                             <div className="flex items-center">
@@ -86,7 +95,15 @@ export const Accounts = ( { mnemonic, index, accounts, selectedAccountId, genera
                                         <div className="flex flex-col gap-5 w-full">
                                             <div className="flex items-center">
                                                 <p className="text-gray-600 w-[15%]">Public Key</p>
-                                                <p className="w-[85%] text-sm">{ account.ethPublicKey }</p>
+
+                                                <div className="flex w-[85%] gap-2">
+                                                    <p className="text-sm">{ account.ethPublicKey }</p>
+                                                    <Copy className="w-5" onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        navigator.clipboard.writeText(account.ethPublicKey);
+                                                        toast({description: "Successfully copied!"});
+                                                    }}/>
+                                                </div>
                                             </div>
                                             
                                             <div className="flex items-center">
