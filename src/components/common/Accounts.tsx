@@ -22,9 +22,9 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
     return (
         <div>
             <div className="flex items-center justify-between">
-                <p className='text-white text-xl'>My Accounts</p>
+                <p className='text-xl'>My Accounts</p>
 
-                { mnemonic && <Button variant="secondary"
+                { mnemonic && <Button
                     onClick={generateNewAccount}
                 >
                     Add new account
@@ -38,7 +38,7 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
                             <div key={account.ethPublicKey} >
                                 <p className="text-white text-center mb-1 text-lg">Account {i + 1}</p>
 
-                                <div className="border border-blue-500 px-4 py-2 rounded-lg">
+                                <div className="border border-gray-500 px-4 py-2 rounded-lg">
                                     <div className="flex items-center gap-10 border-b border-slate-400 py-4 px-4 rounded-md">
                                         <div className="w-[5%]">
                                             <img src={SolanaIcon} alt="Solana" 
@@ -48,14 +48,14 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
 
                                         <div className="flex flex-col gap-5 w-full">
                                             <div className="flex items-center">
-                                                <p className="text-gray-400 w-[15%]">Public Key</p>
-                                                <p className="text-white w-[85%] text-sm">{ account.solPublicKey }</p>
+                                                <p className="text-gray-600 w-[15%]">Public Key</p>
+                                                <p className="w-[85%] text-sm">{ account.solPublicKey }</p>
                                             </div>
                                             
                                             <div className="flex items-center">
-                                                <p className="text-gray-400 w-[15%]">Private Key</p>
+                                                <p className="text-gray-600 w-[15%]">Private Key</p>
                                                 { showKey === `sol-${i}` ? (
-                                                    <p className="text-white w-[85%] text-sm">{ account.solPrivateKey }</p>
+                                                    <p className="w-[85%] text-sm">{ account.solPrivateKey }</p>
                                                 ) : (
                                                     <Button
                                                         className="w-[85%]"
@@ -77,14 +77,14 @@ export const Accounts = ( { mnemonic, index, accounts, generateNewAccount }: Acc
 
                                         <div className="flex flex-col gap-5 w-full">
                                             <div className="flex items-center">
-                                                <p className="text-gray-400 w-[15%]">Public Key</p>
-                                                <p className="text-white w-[85%] text-sm">{ account.ethPublicKey }</p>
+                                                <p className="text-gray-600 w-[15%]">Public Key</p>
+                                                <p className="w-[85%] text-sm">{ account.ethPublicKey }</p>
                                             </div>
                                             
                                             <div className="flex items-center">
-                                                <p className="text-gray-400 w-[15%]">Private Key</p>
+                                                <p className="text-gray-600 w-[15%]">Private Key</p>
                                                 { showKey === `eth-${i}` ? (
-                                                    <p className="text-white w-[85%] text-sm">{ account.ethPrivateKey }</p>
+                                                    <p className="w-[85%] text-sm">{ account.ethPrivateKey }</p>
                                                 ) : (
                                                     <Button
                                                         className="w-[85%]"

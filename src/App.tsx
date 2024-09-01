@@ -55,11 +55,11 @@ function App() {
     }
 
     return (
-        <div className='bg-[#09090b] min-h-screen'>
+        <div className='min-h-screen'>
             <Navbar />
 
-            <div className='grid grid-cols-4 px-10 md:px-14 pt-24 pb-10 gap-6'>
-                <div className='flex flex-col gap-10 col-span-3'>
+            <div className='flex px-10 md:px-14 pt-24 pb-10 gap-6'>
+                <div className='flex flex-col gap-10 w-[75%]'>
                     <SeedPhrase 
                         phrases={phrases} 
                         onChange={handleOnChanage} 
@@ -76,7 +76,7 @@ function App() {
                     />
                 </div>
 
-                <div className='col-span-1 select-none'>
+                <div className='w-[25%] select-none'>
                     <BalanceManagement 
                         accounts={accounts}
                         selectedAccount={selectedAccount}

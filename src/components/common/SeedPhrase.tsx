@@ -55,15 +55,15 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
         <div>
             <Accordion type="single" collapsible>
                 <AccordionItem value="item-1">
-                    <AccordionTrigger className="px-6 text-white">
+                    <AccordionTrigger className="px-6">
                         Secret phrase
                     </AccordionTrigger>
 
-                    <AccordionContent className="px-6 pt-4 pb-6 text-white">
+                    <AccordionContent className="px-6 pt-4 pb-6">
                         <div className="flex justify-center items-center gap-6">
                             { (!mnemonic && !importSecret)  && (
                                 <div>
-                                    <Button variant="secondary"
+                                    <Button
                                         onClick={createNewMnemonic}
                                     >
                                         Create a new secret recovery phrase?
@@ -73,7 +73,7 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
 
                             { (!mnemonic && !importSecret)  && (
                                 <div>
-                                    <Button variant="secondary"
+                                    <Button
                                         onClick={() => setImportSecret(true)}
                                     >
                                         Import secret recovery phrase?
@@ -92,7 +92,7 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                                             placeholder={(i + 1).toString()}
                                             name={i.toString()}  
                                             value={phrase}
-                                            className="bg-black border-none outline-none disabled:text-white"
+                                            className="disabled:text-white"
                                             onChange={handleOnChanage}
                                             autoComplete="off"
                                         />
@@ -106,7 +106,6 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                             ( mnemonic || importSecret) && phrases.some((x) => x !== "") && (
                                 <div className="flex justify-center mt-5">
                                     <Button
-                                        variant="secondary"
                                         className="w-20"
                                         onClick={handleCopy}
                                     >
@@ -117,18 +116,17 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
                         }
 
                         { importSecret && <div>
-                            <p className="text-white text-center my-4">OR</p>
+                            <p className="text-center my-4">OR</p>
 
                             <Input 
                                 type="text"
-                                placeholder="Enter the phrase here" 
-                                className="bg-black"
+                                placeholder="Enter the phrase here"
                                 value={phraseText}
                                 onChange={(e) => setPhraseText(e.target.value)}
                             />
 
                             <div className="flex mt-5 justify-center">
-                                <Button variant="secondary"
+                                <Button
                                     className="w-60"
                                     onClick={handleImportWallet}
                                 >
