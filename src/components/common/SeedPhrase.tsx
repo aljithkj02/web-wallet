@@ -14,7 +14,7 @@ interface SeedPhraseProps {
     mnemonic: string;
     onChange: (index: number, value: string) => void;
     createNewMnemonic: () => void;
-    importWallet: (text: string) => void;
+    importWallet: (text: string) => boolean;
 }
 
 export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, importWallet }: SeedPhraseProps) => {
@@ -37,13 +37,16 @@ export const SeedPhrase = ( { phrases, mnemonic, onChange, createNewMnemonic, im
             return;
         }
 
+        let res = false;
         if (phraseText) {
-            importWallet(phraseText);
+            res = importWallet(phraseText);
         } else {
-            importWallet(phrases.join(' '));
+            res = importWallet(phrases.join(' '));
         }
-        toast({ description: "Wallet imported successfully!"});
-        setImportSecret(false);
+        if (res) {
+            toast({ description: "Wallet imported successfully!"});
+            setImportSecret(false);
+        }
     }
 
     const handleCopy = () => {

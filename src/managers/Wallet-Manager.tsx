@@ -10,8 +10,8 @@ class WalletManager {
     private ethConnection: JsonRpcProvider;
 
     private constructor() {
-        this.solConnection = new Connection("https://solana-devnet.g.alchemy.com/v2/qdL7rHIC_Y8x_kK9SVELDNOIqPRrsJnn");
-        this.ethConnection = new JsonRpcProvider('https://eth-holesky.g.alchemy.com/v2/qdL7rHIC_Y8x_kK9SVELDNOIqPRrsJnn')
+        this.solConnection = new Connection(import.meta.env.VITE_SOL_RPC_URL);
+        this.ethConnection = new JsonRpcProvider(import.meta.env.VITE_ETH_RPC_URL)
     }
 
     static getInstance() {

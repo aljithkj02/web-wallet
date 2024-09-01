@@ -28,6 +28,7 @@ import { EthereumIcon, SolanaIcon } from "@/assets"
 import { ChangeEvent, useEffect, useState } from "react"
 import { walletManager } from "@/managers/Wallet-Manager"
 import { toast } from "@/hooks/use-toast"
+import { isValidSolanaAddress } from "@/lib/utils"
 
 interface BalanceManagementProps {
     accounts: IAccount[];
@@ -77,6 +78,12 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
             toast({ description: "Insufficient balance!"});
             return;
         }
+
+        if (!isValidSolanaAddress(txData.solRecipientAddress)) {
+            toast({ description: "Invalid recipient address!"});
+            return;
+        }
+
         handleLoading(true);
         const res = await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, (+txData.solAmount * 10 ** 9));
         handleLoading(false);
@@ -127,7 +134,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                 <CardDescription>
                                     <div className="mt-5">
                                         <p className="text-4xl text-black text-center font-bold">
-                                            { solBalance === 0 ? 0 : (solBalance/10 ** 9)} SOL
+                                            { solBalance === 0 ? 0 : (solBalance/10 ** 9).toFixed(4)} SOL
                                         </p>
                                     </div>
                                 </CardDescription>

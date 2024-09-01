@@ -8,6 +8,8 @@ import { Toaster } from '@/components/ui/toaster'
 import { walletManager } from '@/managers/Wallet-Manager'
 import { BalanceManagement } from '@/components/common/BalanceManagement'
 import { Loader } from '@/components/common/Loader'
+import { isValidSeedPhrase } from '@/lib/utils'
+import { toast } from './hooks/use-toast'
 
 export interface IAccount {
     ethPrivateKey: string;
@@ -38,8 +40,13 @@ function App() {
     }
 
     const handleImportWallet = (mnemonicText: string) => {
+        if (!isValidSeedPhrase(mnemonicText)) {
+            toast({description: "Invalid seed phrase!"});
+            return false;
+        }
         setMnemonic(mnemonicText);
         setPhrases(mnemonicText.split(' '));
+        return true;
     }
 
     const generateNewAccount = async () => {
