@@ -7,6 +7,7 @@ import { generateMnemonic } from 'bip39'
 import { Toaster } from '@/components/ui/toaster'
 import { walletManager } from '@/managers/Wallet-Manager'
 import { BalanceManagement } from '@/components/common/BalanceManagement'
+import { Loader } from '@/components/common/Loader'
 
 export interface IAccount {
     ethPrivateKey: string;
@@ -23,6 +24,7 @@ function App() {
     const [accounts, setAccounts] = useState<IAccount[]>([]);
     const [selectedAccountId, setSelectedAccountId] = useState<string>("0");
     const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const handleOnChanage = (index: number, value: string) => {
         phrases[index] = value;
@@ -102,6 +104,7 @@ function App() {
                 </div>
             </div>
             <Toaster />
+            { loading && <Loader /> }
         </div>
     )
 }
