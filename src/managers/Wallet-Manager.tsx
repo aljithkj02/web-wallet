@@ -1,4 +1,4 @@
-import { Keypair } from "@solana/web3.js";
+import { Keypair, Connection, PublicKey } from "@solana/web3.js";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { encodeBase58, HDNodeWallet, Wallet } from "ethers";
@@ -6,8 +6,11 @@ import * as nacl from "tweetnacl";
 
 class WalletManager {
     static instance: WalletManager;
+    private solConnection: Connection;
 
-    private constructor() {}
+    private constructor() {
+        this.solConnection = new Connection("https://solana-devnet.g.alchemy.com/v2/qdL7rHIC_Y8x_kK9SVELDNOIqPRrsJnn");
+    }
 
     static getInstance() {
         if (!this.instance) {
@@ -41,6 +44,10 @@ class WalletManager {
             solPublicKey: keypair.publicKey.toBase58(),
             solPrivateKey: encodeBase58(keypair.secretKey)
         }
+    }
+
+    async getSolBalance(address: string) {
+        return await this.solConnection.getBalance(new PublicKey(address));
     }
 }
 

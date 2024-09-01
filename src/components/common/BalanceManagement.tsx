@@ -25,6 +25,8 @@ import {
     TabsTrigger,
   } from "@/components/ui/tabs"
 import { EthereumIcon, SolanaIcon } from "@/assets"
+import { useEffect, useState } from "react"
+import { walletManager } from "@/managers/Wallet-Manager"
 interface BalanceManagementProps {
     accounts: IAccount[];
     selectedAccountId: string;
@@ -33,6 +35,16 @@ interface BalanceManagementProps {
 }
 
 export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount }: BalanceManagementProps) => {
+    const [solBalance, setSolBalance] = useState(0);
+
+    useEffect(() => {
+        getBalance();
+    }, [selectedAccount])
+
+    const getBalance = async () => {
+        const balance = await walletManager.getSolBalance(selectedAccount.solPublicKey);
+        setSolBalance(balance);
+    }
 
     return (
         <div className="border-l border-gray-500 fixed px-6 shadow-lg w-[25%]">
@@ -75,7 +87,9 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                 <CardTitle>Solana</CardTitle>
                                 <CardDescription>
                                     <div className="mt-5">
-                                        <p className="text-4xl text-black text-center font-bold">$10.00</p>
+                                        <p className="text-4xl text-black text-center font-bold">
+                                            { solBalance === 0 ? 0 : (solBalance/10 ** 9)} SOL
+                                        </p>
                                     </div>
                                 </CardDescription>
                             </CardHeader>
