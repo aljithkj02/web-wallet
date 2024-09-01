@@ -1,15 +1,17 @@
 import { Keypair, Connection, PublicKey } from "@solana/web3.js";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
-import { encodeBase58, HDNodeWallet, Wallet } from "ethers";
+import { encodeBase58, HDNodeWallet, Wallet, JsonRpcProvider } from "ethers";
 import * as nacl from "tweetnacl";
 
 class WalletManager {
     static instance: WalletManager;
     private solConnection: Connection;
+    private ethConnection: JsonRpcProvider;
 
     private constructor() {
         this.solConnection = new Connection("https://solana-devnet.g.alchemy.com/v2/qdL7rHIC_Y8x_kK9SVELDNOIqPRrsJnn");
+        this.ethConnection = new JsonRpcProvider('https://eth-holesky.g.alchemy.com/v2/qdL7rHIC_Y8x_kK9SVELDNOIqPRrsJnn')
     }
 
     static getInstance() {
@@ -48,6 +50,10 @@ class WalletManager {
 
     async getSolBalance(address: string) {
         return await this.solConnection.getBalance(new PublicKey(address));
+    }
+
+    async getEthBalance(address: string) {
+        return await this.ethConnection.getBalance(address);
     }
 }
 

@@ -36,14 +36,18 @@ interface BalanceManagementProps {
 
 export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount }: BalanceManagementProps) => {
     const [solBalance, setSolBalance] = useState(0);
+    const [ethBalance, setEthBalance] = useState(0);
 
     useEffect(() => {
         getBalance();
     }, [selectedAccount])
 
     const getBalance = async () => {
-        const balance = await walletManager.getSolBalance(selectedAccount.solPublicKey);
-        setSolBalance(balance);
+        const balanceSol = await walletManager.getSolBalance(selectedAccount.solPublicKey);
+        setSolBalance(balanceSol);
+
+        const balanceEth = await walletManager.getEthBalance(selectedAccount.ethPublicKey);
+        setEthBalance(Number(balanceEth));
     }
 
     return (
@@ -124,7 +128,9 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                 <CardTitle>Ethereum</CardTitle>
                                 <CardDescription>
                                     <div className="mt-5">
-                                        <p className="text-4xl text-black text-center font-bold">$10.00</p>
+                                        <p className="text-4xl text-black text-center font-bold">
+                                            { ethBalance } ETH
+                                        </p>
                                     </div>
                                 </CardDescription>
                             </CardHeader>
