@@ -60,7 +60,7 @@ export const Accounts = ( { mnemonic, index, accounts, selectedAccountId, genera
                                             <div className="flex items-center">
                                                 <p className="text-gray-600 w-[15%]">Private Key</p>
                                                 { showKey === `sol-${i}` ? (
-                                                    <p className="w-[85%] text-sm">{ account.solPrivateKey }</p>
+                                                    <p className="w-[85%] text-sm">{ account.solPrivateKeyB58 }</p>
                                                 ) : (
                                                     <Button
                                                         className="w-[85%]"

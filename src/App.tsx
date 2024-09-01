@@ -11,8 +11,9 @@ import { BalanceManagement } from '@/components/common/BalanceManagement'
 export interface IAccount {
     ethPrivateKey: string;
     ethPublicKey: string;
-    solPrivateKey: string;
+    solPrivateKey: Uint8Array;
     solPublicKey: string;
+    solPrivateKeyB58: string;
 }
 
 function App() {

@@ -1,4 +1,4 @@
-import { Keypair, Connection, PublicKey } from "@solana/web3.js";
+import { Keypair, Connection, PublicKey, Transaction, SystemProgram, sendAndConfirmTransaction } from "@solana/web3.js";
 import { mnemonicToSeed } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { encodeBase58, HDNodeWallet, Wallet, JsonRpcProvider } from "ethers";
@@ -44,7 +44,8 @@ class WalletManager {
 
         return {
             solPublicKey: keypair.publicKey.toBase58(),
-            solPrivateKey: encodeBase58(keypair.secretKey)
+            solPrivateKey: keypair.secretKey,
+            solPrivateKeyB58: encodeBase58(keypair.secretKey)
         }
     }
 
@@ -54,6 +55,30 @@ class WalletManager {
 
     async getEthBalance(address: string) {
         return await this.ethConnection.getBalance(address);
+    }
+
+    async sendSOL(privateKey: Uint8Array, publicKey: string, to: string, amount: number) {
+        const from = Keypair.fromSecretKey(privateKey);
+
+        const data = {
+            fromPubkey: new PublicKey(publicKey),
+            toPubkey: new PublicKey(to),
+            lamports: amount
+        }
+
+        console.log({data})
+        return;
+
+        const transaction = new Transaction().add(
+            SystemProgram.transfer(data)
+        )
+
+        const signature = await sendAndConfirmTransaction(
+            this.solConnection,
+            transaction,
+            [from]
+        )
+        console.log("SIGNATURE", signature);
     }
 }
 

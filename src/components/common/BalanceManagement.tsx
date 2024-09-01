@@ -25,8 +25,9 @@ import {
     TabsTrigger,
   } from "@/components/ui/tabs"
 import { EthereumIcon, SolanaIcon } from "@/assets"
-import { useEffect, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import { walletManager } from "@/managers/Wallet-Manager"
+
 interface BalanceManagementProps {
     accounts: IAccount[];
     selectedAccountId: string;
@@ -34,12 +35,21 @@ interface BalanceManagementProps {
     handleSelectAccountId: (accountNumber: string) => void;
 }
 
+const initTxData = {
+    solRecipientAddress: '',
+    ethRecipientAddress: '',
+    solAmount: '',
+    ethAmount: ''
+}
+
 export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount }: BalanceManagementProps) => {
     const [solBalance, setSolBalance] = useState(0);
     const [ethBalance, setEthBalance] = useState(0);
+    const [txData, setTxData] = useState(initTxData)
 
     useEffect(() => {
         getBalance();
+        setTxData(initTxData);
     }, [selectedAccount])
 
     const getBalance = async () => {
@@ -48,6 +58,21 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
 
         const balanceEth = await walletManager.getEthBalance(selectedAccount.ethPublicKey);
         setEthBalance(Number(balanceEth));
+    }
+
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setTxData({
+            ...txData,
+            [name]: value
+        })
+    }
+
+    const handleSendSol = async () => {
+        console.log({txData})
+        return;
+        const res = await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, +txData.solAmount);
     }
 
     return (
@@ -105,11 +130,17 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                         className="w-10 mx-auto h-16"
                                     />
                                     <Input
+                                        name="solRecipientAddress"
+                                        value={txData.solRecipientAddress}
+                                        onChange={handleOnChange}
                                         className="mt-5"
                                         placeholder="Recipient's Solana address"
                                     />
 
                                     <Input
+                                        name="solAmount"
+                                        value={txData.solAmount}
+                                        onChange={handleOnChange}
                                         className="mt-2"
                                         placeholder="Amount"
                                     />
@@ -117,7 +148,9 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                             </CardContent>
 
                             <CardFooter className="flex justify-center">
-                                <Button className="w-full">Send</Button>
+                                <Button className="w-full"
+                                    onClick={handleSendSol}
+                                >Send</Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>
@@ -142,11 +175,17 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                                         className="w-10 mx-auto"
                                     />
                                     <Input
+                                        name="ethRecipientAddress"
+                                        value={txData.ethRecipientAddress}
+                                        onChange={handleOnChange}
                                         className="mt-5"
                                         placeholder="Recipient's Ethereum address"
                                     />
 
                                     <Input
+                                        name="ethAmount"
+                                        value={txData.ethAmount}
+                                        onChange={handleOnChange}
                                         className="mt-2"
                                         placeholder="Amount"
                                     />
