@@ -24,7 +24,7 @@ function App() {
     const [accounts, setAccounts] = useState<IAccount[]>([]);
     const [selectedAccountId, setSelectedAccountId] = useState<string>("0");
     const [selectedAccount, setSelectedAccount] = useState<IAccount | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     const handleOnChanage = (index: number, value: string) => {
         phrases[index] = value;
@@ -64,6 +64,10 @@ function App() {
         setSelectedAccount(accounts[+accountId]);
     }
 
+    const handleLoading = (val: boolean) => {
+        setLoading(val);
+    }
+
     return (
         <div className='min-h-screen'>
             <Navbar />
@@ -96,6 +100,7 @@ function App() {
                                 selectedAccountId={selectedAccountId}
                                 handleSelectAccountId={handleSelectAccountId}
                                 selectedAccount={selectedAccount}
+                                handleLoading={handleLoading}
                             />
                         ) : (
                             <p className='text-lg text-center mt-6'>No account selected!</p>

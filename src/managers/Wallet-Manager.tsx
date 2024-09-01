@@ -58,27 +58,28 @@ class WalletManager {
     }
 
     async sendSOL(privateKey: Uint8Array, publicKey: string, to: string, amount: number) {
-        const from = Keypair.fromSecretKey(privateKey);
+        try {
+            const from = Keypair.fromSecretKey(privateKey);
 
-        const data = {
-            fromPubkey: new PublicKey(publicKey),
-            toPubkey: new PublicKey(to),
-            lamports: amount
+            const data = {
+                fromPubkey: new PublicKey(publicKey),
+                toPubkey: new PublicKey(to),
+                lamports: amount
+            }
+
+            const transaction = new Transaction().add(
+                SystemProgram.transfer(data)
+            )
+
+            const signature = await sendAndConfirmTransaction(
+                this.solConnection,
+                transaction,
+                [from]
+            )
+            console.log("SIGNATURE", signature);
+        } catch (error) {
+            console.log((error as Error).message);
         }
-
-        console.log({data})
-        return;
-
-        const transaction = new Transaction().add(
-            SystemProgram.transfer(data)
-        )
-
-        const signature = await sendAndConfirmTransaction(
-            this.solConnection,
-            transaction,
-            [from]
-        )
-        console.log("SIGNATURE", signature);
     }
 }
 

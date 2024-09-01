@@ -27,12 +27,14 @@ import {
 import { EthereumIcon, SolanaIcon } from "@/assets"
 import { ChangeEvent, useEffect, useState } from "react"
 import { walletManager } from "@/managers/Wallet-Manager"
+import { toast } from "@/hooks/use-toast"
 
 interface BalanceManagementProps {
     accounts: IAccount[];
     selectedAccountId: string;
     selectedAccount: IAccount;
     handleSelectAccountId: (accountNumber: string) => void;
+    handleLoading: (val: boolean) => void;
 }
 
 const initTxData = {
@@ -42,7 +44,7 @@ const initTxData = {
     ethAmount: ''
 }
 
-export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount }: BalanceManagementProps) => {
+export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAccountId, selectedAccount, handleLoading }: BalanceManagementProps) => {
     const [solBalance, setSolBalance] = useState(0);
     const [ethBalance, setEthBalance] = useState(0);
     const [txData, setTxData] = useState(initTxData)
@@ -70,9 +72,13 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
     }
 
     const handleSendSol = async () => {
-        console.log({txData})
-        return;
-        const res = await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, +txData.solAmount);
+        if ((+txData.solAmount * 10 ** 9) > solBalance) {
+            toast({ description: "Insufficient balance!"});
+            return;
+        }
+        handleLoading(true);
+        const res = await walletManager.sendSOL(selectedAccount.solPrivateKey, selectedAccount.solPublicKey, txData.solRecipientAddress, (+txData.solAmount * 10 ** 9));
+        handleLoading(false);
     }
 
     return (
@@ -150,6 +156,7 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                             <CardFooter className="flex justify-center">
                                 <Button className="w-full"
                                     onClick={handleSendSol}
+                                    disabled={!txData.solAmount || !txData.solRecipientAddress}
                                 >Send</Button>
                             </CardFooter>
                         </Card>
@@ -193,7 +200,9 @@ export const BalanceManagement = ({ accounts, handleSelectAccountId, selectedAcc
                             </CardContent>
 
                             <CardFooter className="flex justify-center">
-                                <Button className="w-full">Send</Button>
+                                <Button className="w-full"
+                                    disabled={!txData.ethAmount || !txData.ethRecipientAddress}
+                                >Send</Button>
                             </CardFooter>
                         </Card>
                     </TabsContent>
